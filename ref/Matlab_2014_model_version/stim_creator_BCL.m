@@ -2,7 +2,7 @@ function stimulus = stim_creator_BCL(BCL, pulselength, totallength)
 %**************************************************************************
 % Returns n x 2 -matrix that contains time and stimuluscurrent.
 % BCL is basic cycle length (ms), pulselength is length of pulse (ms),
-% totallength is the total length of the stimulus current time course (ms)
+% totallength is the total length of the stimulus current time course (sec)
 % and amplitude is amplitue of the pulse in pA/pF
 %
 % WARNING This isn't absolutely accurate stimulator

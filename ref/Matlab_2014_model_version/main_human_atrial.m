@@ -56,8 +56,8 @@ if pacinginit
     fid = fopen(ofile,'w');
     fclose(fid);
     options = odeset('AbsTol', 1e-6, 'RelTol', 1e-3, 'OutputFcn',@tofile);
-    %[a, b] = ode15s(@dy_human_atrial, [0 tend], y0, options, modelswitch);
-    [a, b] = ode15s(@dy_human_atrial, [0 4000], y0, options, modelswitch); % standard length for quiescent simulation
+    %[a, b] = ode15s(@dy_human_atrial, [0 tend], y0, options, modelswitch, BCL);
+    [a, b] = ode15s(@dy_human_atrial, [0 4000], y0, options, modelswitch, BCL); % standard length for quiescent simulation
 end
 
 % Stimulus calculations
@@ -88,19 +88,19 @@ fclose(fid);
 if BCL > 0
     if (round(tend/(BCL/1000))-1) >= 1
         for n = 1:((round(tend/(BCL/1000))-1))
-            [a, b] = ode15s(@dy_human_atrial, [((n-1)*stimpoint) (((n-1)*stimpoint) + 1e-3)], y0, options1, modelswitch);
+            [a, b] = ode15s(@dy_human_atrial, [((n-1)*stimpoint) (((n-1)*stimpoint) + 1e-3)], y0, options1, modelswitch, BCL);
             y0 = b(end,:);
-            [a, b] = ode15s(@dy_human_atrial, [(((n-1)*stimpoint) + 1e-3) (n*stimpoint)], y0, options2, modelswitch);
+            [a, b] = ode15s(@dy_human_atrial, [(((n-1)*stimpoint) + 1e-3) (n*stimpoint)], y0, options2, modelswitch, BCL);
             y0 = b(end,:);
         end
         redu = 1;
-        [a, b] = ode15s(@dy_human_atrial, [(n*stimpoint) tend], y0, options1, modelswitch);
+        [a, b] = ode15s(@dy_human_atrial, [(n*stimpoint) tend], y0, options1, modelswitch, BCL);
     else
         redu = 1;
-        [a, b] = ode15s(@dy_human_atrial, [0 tend], y0, options1, modelswitch);
+        [a, b] = ode15s(@dy_human_atrial, [0 tend], y0, options1, modelswitch, BCL);
     end
 else
-[a, b] = ode15s(@dy_human_atrial, [0 tend], y0, options2, modelswitch);
+[a, b] = ode15s(@dy_human_atrial, [0 tend], y0, options2, modelswitch, BCL);
 end
     
 

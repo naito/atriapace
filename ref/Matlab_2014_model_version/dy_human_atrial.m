@@ -1,4 +1,4 @@
-function [dy] = dy_human_atrial(t, y, modelvariant)
+function [dy] = dy_human_atrial(t, y, modelvariant, BCL)
 %**************************************************************************
 % Human atrial myocyte model
 %
@@ -120,7 +120,9 @@ switch stimulus_mode
         stim_amplitude = -30/4;
         stim_period = BCL/1000;
 
-        if ((time-floor(time/stim_period)*stim_period >= stim_offset) && (time-floor(time/stim_period)*stim_period <= stim_offset + stim_duration))
+        % if ((time-floor(time/stim_period)*stim_period >= stim_offset) && (time-floor(time/stim_period)*stim_period <= stim_offset + stim_duration))
+        %    Istim = stim_amplitude;
+        if ((t-floor(t/stim_period)*stim_period >= stim_offset) && (t-floor(t/stim_period)*stim_period <= stim_offset + stim_duration))
            Istim = stim_amplitude;
         else
            Istim = 0.0;
