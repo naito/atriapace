@@ -56,7 +56,8 @@ ofile = ['ss' outputfile];
 fid = fopen(ofile,'w');
 fclose(fid);
 options = odeset('AbsTol', 1e-6, 'RelTol', 1e-3, 'OutputFcn',@tofile); 
-[a, b] = ode15s(@dy_human_atrial_vCaNassIk, [0 4000], y0, options);
+% [a, b] = ode15s(@dy_human_atrial_vCaNassIk, [0 4000], y0, options);
+[a, b] = ode15s(@dy_human_atrial_PLoS_2014, [0 4000], y0, options);
 end
 
 % Stimulus calculations
@@ -87,19 +88,19 @@ fclose(fid);
 if freq > 0
     if (round(tend*freq)-1) >= 1
         for n = 1:((round(tend*freq)-1))
-            [a, b] = ode15s(@dy_human_atrial_vCaNassIk, [((n-1)*stimpoint) (((n-1)*stimpoint) + 1e-3)], y0, options1);
+            [a, b] = ode15s(@dy_human_atrial_PLoS_2014, [((n-1)*stimpoint) (((n-1)*stimpoint) + 1e-3)], y0, options1);
             y0 = b(end,:);
-            [a, b] = ode15s(@dy_human_atrial_vCaNassIk, [(((n-1)*stimpoint) + 1e-3) (n*stimpoint)], y0, options2);
+            [a, b] = ode15s(@dy_human_atrial_PLoS_2014, [(((n-1)*stimpoint) + 1e-3) (n*stimpoint)], y0, options2);
             y0 = b(end,:);
         end
         redu = 1;
-        [a, b] = ode15s(@dy_human_atrial_vCaNassIk, [(n*stimpoint) tend], y0, options1);
+        [a, b] = ode15s(@dy_human_atrial_PLoS_2014, [(n*stimpoint) tend], y0, options1);
     else
         redu = 1;
-        [a, b] = ode15s(@dy_human_atrial_vCaNassIk, [0 tend], y0, options1);
+        [a, b] = ode15s(@dy_human_atrial_PLoS_2014, [0 tend], y0, options1, 'nSR');
     end
 else
-[a, b] = ode15s(@dy_human_atrial_vCaNassIk, [0 tend], y0, options2);
+[a, b] = ode15s(@dy_human_atrial_PLoS_2014, [0 tend], y0, options2);
 end
     
 
